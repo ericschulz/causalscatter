@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Eric Schulz">
+    <meta charset="utf-8">
+
+
+    <title>Causality Study</title>
+     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script> 
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script> 
+    <script src="js/d3.min.js" charset="utf-8"></script>
+    <script src="js/numeric-1.2.6.js" charset="utf-8"></script>
+    <script src='https://cdn.firebase.com/js/client/1.1.1/firebase.js'></script>
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ </head>
+ <body>
+ 
+ <div class="container">
+    <div class="row">
+ 
+<div id="page1" style="display:block">
+    <h3>Welcome: </h3>
+    <p> This study is part of a research project conducted by Eric Schulz, University College London. </p>
+    <p> In this study we want to investigate how humans perceive causality.</p>
+    <p> Please read the instructions carefully and try to perform as well as you can.</p>
+    <p> If you have any questions, please write an email to <font color="blue">eric.schulz.13@ucl.ac.uk</font></p><br>
+    <button type="button" name="button"; onclick="clickStart('page1', 'page2')"; >Continue</button>
+</div>
+
+
+<!--Second page contains Ethics statement-->
+<div id="page2" style="display:none">
+    <h3>Consent form for participation in this online experiment</h3>
+    <p> This study has been approved by UCL CPB Department's Ethics Chair: CPB/2015/02<br>
+        Designed by: Eric Schulz <br>
+	      Email: <font color="blue">eric.schulz.13@ucl.ac.uk</font><br>
+    </p>
+    <p>We would like to invite you to participate in this research project. You should only participate if you want to; choosing not to take part will not disadvantage you in any way. Before you decide whether you want to take part, it is important for you to read the following information carefully. Ask us if there is anything that is not clear or if you would like more information.</p>
+    <p>We are investigating how people make sense out of their environment. In this study you will perform a simple computer task in which you see data that was produced by a cause and resulted in an effect. It is then your task to distinguish between cause and effect.</p>
+    <p>The study should not take longer than 20 minutes.</p>
+    <p>All data will be handled according to the Data Protection Act 1998. All responses are treated as confidential and anonymous. All data will be pooled and published in aggregate form only. Only Eric Schulz and researchers working with him will have access to the data. </p>
+    <p>It is up to you to decide whether or not to take part. If you choose not to participate it will involve no penalty or loss of benefits to which you are otherwise entitled. If you decide to take part you are still free to withdraw at any time and without giving a reason.</p>
+    
+    <p>By clicking on the button below, you agree to the following:</p>
+    <br>
+    <p>I have read the above information.</p>
+    <p>I understand that I am free to withdraw from the study without penalty if I so wish and I consent to the processing of my personal information for the purposes of this study only and that it will not be used for any other purpose. I understand that such information will be treated as strictly confidential and handled in accordance with the provisions of the Data Protection Act 1998. </p>
+    <p>I understand that the information I have submitted will be published as a report. Confidentiality and anonymity will be maintained and it will not be possible to identify me from any publications. I understand that I am being paid for my assistance in this research.</p>
+    <br>
+    <button type="button" name="button"; onclick="clickStart('page2','page3')"; >Agree</button>
+    </div>
+
+<div id="page3" style="display:none">
+    <h3>Instructions:</h3>
+<p><b>Please read the following instructions very carefully: </b></p>
+<br>
+<p> In the following study, it is your task to distinguish cause from effect. </p>
+<p> You will see two different plots of the same data. It is your task to decide which of the two plots is more likely to be true. Truth here means that the labels <b>cause</b> and <b>effect</b> are on the correct axis. Some examples of cause and effect are: altitude causes lower temperature, heat causes water to boil, the frequency of brushing one's teeths causes different numbers of cavities, etc.</p>
+<p>You have a total number of 80 trials ahead of you. That means you have <b>80</b> chances to indicate which of the two plots you think is more likely to have the cause and the effect-label on the correct axis.</p>
+<p>The data you will see are actual data sets, where one variable has caused the other. We are interested in seeing whether you can tell which one is which and indicate that by selecting which of the two variables is more likely to be the cause and therefore on the horizontal x-axis and which one the effect and therefore should be on the vertical y-axis.</p> 
+<p>Afterwards, you will be rewarded based on the true underlying relations of cause and effect and how well you were able to determine those.</p>  
+<p>For every task, you will see a page with the instructions, an input slider, and two plots of the same data, but with exchanged axes accordingly. You can hide the instructions by clicking "Hide explanations". You can show them by clicking "Show explanations".</p>
+<br><br>
+<p><b>Please click on the button below to start the task.</b></p>
+        <div style="width:500px;margin:0 auto">
+          <button type="button" name="button"; onclick="dostart()"; >Go to task</button>  
+        </div>
+</div>
+
+<div id="page4" style="display:none">
+      <!-- Begin page content -->
+       <div class="page-header">
+          <h1> <font size="4">Please indicate which of the two plots you think is more likely.</font> </h1>
+        </div>
+         <div id="explainshow" style="display:block">
+         <p> <b>Explanation:</b></p><br>
+         <p><b>I.</b> Below you see two plots of the same data. The data has been produced by one variable causing the other.</p>
+         <p><b>II.</b> As is commonly done, the cause should be on the x-axis (the horizontal lower axis) and the effect should be on the y-axis (the vertical axis on the left). </p>
+         <p><b>III.</b> Remember, it is your task to indicate which of the two plots is more likely, that is which of the two variables is more likely to have caused the other variable and therefore should be put on the x-axis.</p>
+         <p><b>IV.</b> On top of the graph, you can see how many invesitgations you have left.</p>
+         <p><b>V.</b> Please use the slider to indicate how likely you think the plots are (-100=it is definitely the left plot; 100=it is definitely the right plot; 0=both are equally likely).</p>
+         <p><b>VI.</b>  You will see 80 different data sets overall.</p>
+         <button type="button" name="button"; onclick="clickStart('explainshow','explainhide')"; >Hide explanation</button>
+         </div>
+         <div id="explainhide" style="display:none">
+         <button type="button" name="button"; onclick="clickStart('explainhide','explainshow')"; >Show explanation</button>
+        </div>
+      <center><b><div id="remaining">Number of trials left: 80</div></b></center> 
+      <div style="width:850px;margin:0 auto">
+          <div class="plot0" style="float:left"></div>
+          <div class="plot1"style="float:right" ></div>
+          
+              
+          <p><b>Which of the two plots is more likely?</b></p>
+       <div style="width:780px;float:left"">  
+          <div id="slider"></div>
+          <span id="slidervalue">0</span><br/>
+          <button type="button" name="button"; onclick="dotrial()"; >Submit</button>          
+            </div>  
+
+      </div>  
+      <br><br>
+</div>
+
+
+<div id="page5" style="display:none">
+      <fieldset>
+              <div style="float:left;width:400px;margin:5px">
+                How old are you?<br>
+                <input id="age1" type="radio" name="age1" value="20" >18-25<br>
+                <input id="age2" type="radio" name="age2" value="30" >26-35<br>
+                <input id="age3" type="radio" name="age3" value="40" >36-50<br>
+                <input id="age4" type="radio" name="age4" value="50" >above 50<br>
+              </div>
+              <div style="float:left;width:400px;margin:5px">
+                What's your gender?<br>
+                <input id="gender1" type="radio" name="gender1" value="0" >Female<br>
+                <input id="gender2" type="radio" name="gender2" value="1" >Male<br>
+              </div>
+         </fieldset>
+        <div style="width:50px;margin:0 auto">
+         <button type="button" name="button"; onclick="clickStart('page5','page6')"; >Done</button>
+        </div>
+</div>
+
+<div id="page6" style="display:none">
+     <p><b>You have finished the experiment. </p></b> 
+     <p>Once you click "Submit data" your data will be stored anonymously in our data base. </p>
+     <p> Please only click "Submit data" if you think you have provided an honest attempt at the study and are happy with us using your data for scientific purposes. </p>
+     <button type="button" name="button"; onclick="senddata()"; >Submit data</button>    
+</div>
+
+<div id="page7" style="display:none">
+     <p><b>Thank you for participating in our experiment. </p></b> 
+     <p><b>Please write down the following code: gpcausal2016</p></b> 
+     <p><b>Keep this code ready so that you can enter it on the Amazon Mechanical Turk webpage.</p></b> 
+</div>
+
+</div>
+</div>
+<script src="js/causal.js" charset="utf-8"></script>
+</body>
+</html>
